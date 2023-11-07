@@ -1,5 +1,4 @@
 package NQueen;
-import Utile.AlgosUtiles;
 import java.util.*;
 
 public class AlgosNQueen {
@@ -21,7 +20,7 @@ public class AlgosNQueen {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static PartialSolNQueen backTrackQueenVO(PartialSolNQueen s){
+    public static PartialSolNQueen backTrackQueenV0(PartialSolNQueen s){
         //v0 : equivalent à tester tous les tuples
         //prérequis : s solution partielle (pas forcément valide)
         //action : si une solution s* qui étend s elle existe alors en retourne une (indépendante de s : n'oubliez pas d'utiliser le contructeur par recopie)
@@ -137,6 +136,11 @@ public class AlgosNQueen {
         m.put(22,"chopin"); //j'associe 22 -> "chopin"
         m.put(22,"ravel"); //j'associe 22 -> "ravel" (une clef ne peut être associée qu'à une valeur)
         m.put(30,"beethoven");
+
+        if(m.containsKey(12))
+            System.out.println("la map contient un objet de clef 12");
+        if(m.containsKey(30))
+            System.out.println("la map contient un objet de clef 30");
 
         //m.get(k) retourne null si !m.contains(k), et la valeur correspondante sinon
         String r = m.get(22);; // b = "ravel"

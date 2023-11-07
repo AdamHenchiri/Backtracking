@@ -10,8 +10,8 @@ public class TestNQueen {
     }
 
     public static void testConstraintOK_0(){
-        printTest("testConstraintOK_0",PartialSolNQueen.constraintOk(0,3,0,1));
-        printTest("testConstraintOK_0",!PartialSolNQueen.constraintOk(0,1,0,1));
+        printTest("testConstraintOK_0",PartialSolNQueen.constraintOk(0, 0, 3, 1));
+        printTest("testConstraintOK_0",!PartialSolNQueen.constraintOk(0, 0, 1, 1));
     }
 
     public static void testV0(){
@@ -122,9 +122,20 @@ public class TestNQueen {
     public static void testsLongs(){
         PartialSolNQueen s;
         int n = 28;
+        long startTime = System.nanoTime();
         System.out.println(AlgosNQueen.mainBackTrackQueenV1(n)); //avec juste solutions valides sans domaines
+        long endTime = System.nanoTime();
+        System.out.println((endTime-startTime)/1000000000.0 + " secondes passé sur V1");
+
+        startTime = System.nanoTime();
         System.out.println(AlgosNQueen.mainBackTrackQueenV2(n)); //avec domaines et FCC
+        endTime = System.nanoTime();
+        System.out.println((endTime-startTime)/1000000000.0 + " secondes passé sur V2");
+
+        startTime = System.nanoTime();
         System.out.println(AlgosNQueen.mainBackTrackQueenV3(n)); //avec domaines et FCC + MRV
+        endTime = System.nanoTime();
+        System.out.println((endTime-startTime)/1000000000.0 + " secondes passé sur V3");
 
     }
 

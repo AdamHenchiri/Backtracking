@@ -2,13 +2,13 @@ package NQueen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class PartialSolNQueen {
 
     //définitions pour n queens:
-    //une PartialSolNqueen est une solution partielle : un ensemble {(l_i,c_i)} avec l_i et c_i dans {0,n-1} signifiant que reine ligne l_i affectée en colonne c_i
+    //une PartialSolNqueen est une solution partielle : un ensemble {(l_i,c_i)} avec l_i et c_i dans {0,n-1} signifiant que reine ligne l_i
+    // affectée en colonne c_i
     //la ligne 0 est celle du haut, et la colonne 0 est celle de gauche.
 
     //une solution partielle est *valide* si pour tout couple (l_1,c_1), (l_2,c_2) dans s, reine en (l_1,c_1) ne peut pas prendre celle en (l_2,c_2)
@@ -59,7 +59,7 @@ public class PartialSolNQueen {
 
 
 
-    public static boolean constraintOk(int l1, int l2, int c1, int c2){
+    public static boolean constraintOk(int l1, int c1, int l2, int c2){
         //prérequis li et ci >= 0
         //retourne vrai ssi reine en (l_1,c_1) ne peut pas prendre celle en (l_2,c_2) (et qu'elles ne sont pas sur la même case)
         throw new RuntimeException("methode non implémentée");
@@ -75,7 +75,7 @@ public class PartialSolNQueen {
         //retourne vrai ssi this est valide
         for(Integer l : m.keySet()){
             for(Integer l2 : m.keySet()){
-                if((l!=l2) && !constraintOk(l,l2,m.get(l),m.get(l2)))
+                if((l!=l2) && !constraintOk(l, m.get(l), l2, m.get(l2)))
                     return false;
             }
         }
