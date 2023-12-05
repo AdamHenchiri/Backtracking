@@ -160,8 +160,8 @@ public class TestVC {
             Graph g = new Graph(n, true, proba);
             System.out.println("nb edges of g " + g.m()+" matching "+g.matching().size());
             double t1 = System.currentTimeMillis();
-            PartialSolVC s = new PartialSolVC(g, k);
-         //   PartialSolVC s2 = AlgosVC.mainBackTrackVCV0(s);
+         //   PartialSolVC s = new PartialSolVC(g, k);
+            PartialSolVC s2 = AlgosVC.mainBackTrackVCV0(g,k);
             double t2 = System.currentTimeMillis();
             System.out.println("solving time V0 : " + (t2 - t1));
             double t1hd = System.currentTimeMillis();
