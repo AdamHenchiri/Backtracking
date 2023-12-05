@@ -85,24 +85,21 @@ public class PartialSolSudoku {
         return i*n+j;
     }
 
-    public static ArrayList<Integer> intToCoord(int n, int c){
-        //pré 0 <= c < n^2-1
-        //retourne (i,j) tq caseToInt(i,j)=c
-        ArrayList<Integer> res = new ArrayList<>();
-        res.add(c/n);
-        res.add(c%n);
-        return res;
+    public static int intToLine(int n, int c){
+        return c/n;
+    }
+    public static int intToCol(int n, int c){
+        return c%n;
     }
 
-    public static ArrayList<Integer> intToSS(int n,int c){
+    public static ArrayList<Integer> intToSS(int n, int numCase){
         //pré 0 <= c < n^2-1
-        //retourne (i,j) tq le sous-carré (i,j) contienne la  case num c
+        //retourne (i,j) tq le sous-carré (i,j) contienne la  case num numCase
 
-        ArrayList<Integer> coord = intToCoord(n,c);
         ArrayList<Integer> res = new ArrayList<>();
         int sizeSS = (int)Math.sqrt(n);
-        res.add(coord.get(0)/sizeSS);
-        res.add(coord.get(1)/sizeSS);
+        res.add(intToLine(n, numCase)/sizeSS);
+        res.add(intToCol(n, numCase)/sizeSS);
         return res;
     }
 
@@ -145,12 +142,13 @@ public class PartialSolSudoku {
         //si un domaine est devenu vide on peut s'arrêter et retourner false (et rien de garanti sur domaines)
         //sinon retourne true et enlève bien la valeur de tous les domaines
 
-        ArrayList<Integer> coord = intToCoord(n,numCase);
-        int l_c0 = coord.get(0);
-        for(int nc2 = l_c0*n;nc2 < l_c0*n+n;nc2++){
-            if(D.containsKey(nc2)) {
-                D.get(nc2).remove((Integer) val);
-                if (D.get(nc2).isEmpty())
+
+        int line = intToLine(n, numCase);
+        for(int colonne = 0; colonne < n; colonne++){
+            int nc = coordToInt(n, line, colonne);
+            if(D.containsKey(nc)) {
+                D.get(nc).remove((Integer) val);
+                if (D.get(nc).isEmpty())
                     return false;
             }
         }
@@ -162,7 +160,7 @@ public class PartialSolSudoku {
         //  0<= numcase <n*n, et la case numCase est vide
         //  !D.contains(numCase)
         //
-        //soit c la ligne de numcase
+        //soit c la colonne de numcase
         //action :
         // pour toutes les variables de D dont la case est sur la colonne c, retire de leur domaine la valeur val :
         //si un domaine est devenu vide on peut s'arrêter et retourner false (et rien de garanti sur domaines)
