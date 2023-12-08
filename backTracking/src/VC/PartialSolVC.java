@@ -84,8 +84,7 @@ public class PartialSolVC {
         //  -si (val==true) (signifie qu'on veut prendre le sommet i), retourne vrai si s' contient bien encore au plus k sommets (et rien à faire sur les domaines)
         //  -sinon
         //     fait du fwd checking pour enlever de D les valeurs devenant illégales si l'on ajoutait (i,val) à this
-        //     si aucun domaine ne devient vide, retourne true
-        //     sinon, sinon retourne faux (et aucune garantie à fournir sur D)
+        //     return true (aucun domaine ne peut devenir vide)
 
         //  -ne modifie pas this
         throw new RuntimeException("methode non implementee");
