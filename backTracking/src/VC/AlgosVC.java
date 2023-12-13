@@ -8,15 +8,27 @@ import java.util.Map;
 
 public class AlgosVC {
 
-    public static PartialSolVC backTrackVCV0(PartialSolVC s, Map<Integer,ArrayList<Boolean>> D){
+    public static PartialSolVC backTrackVCV0(PartialSolVC s, Map<Integer,ArrayList<Boolean>> D) {
         //prérequis : (s,D) est FCC+ et non trivial
         //action : si il existe une solution s* qui étend s et qui respecte D, en retourne une (indépendante de s)
         //sinon retourne null
         //utilise MRV pour le choix de la prochaine variable
         //
         // ne modifie pas s
-
-        throw new RuntimeException("methode non implementee");
+        if (s.isFullSolution())
+            return new PartialSolVC(s);
+        int i = AlgosUtiles.getUnaffectedVariableMRV(D);
+        for (Boolean v : D.get(i)) {
+            Map<Integer, ArrayList<Boolean>> Dmodif = AlgosUtiles.<Boolean>deepCopyMap(D);//new HashMap<>(D);
+            boolean ok = s.propageContraintes(Dmodif, i, v);
+            if (!ok)
+                s.add(i, v);
+                PartialSolVC res = backTrackVCV0(s, Dmodif);
+                s.remove(i);
+                if (res != null)
+                    return res;
+        }
+        return null;
     }
 
     public static PartialSolVC mainBackTrackVCV0(Graph g, int k){

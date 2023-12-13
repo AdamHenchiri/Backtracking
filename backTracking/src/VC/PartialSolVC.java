@@ -39,8 +39,7 @@ public class PartialSolVC {
     }
 
     public boolean isFullSolution(){
-
-        throw new RuntimeException("methode non implementee");
+        return solution.size()==grapheInitial.n();
     }
     public int nbChosenVertices(){
         return sommetAjouté.size();
@@ -58,10 +57,15 @@ public class PartialSolVC {
     public void remove(int i){
         //prérequis : i sommet de g  et s.containsKey(i)
         //action : supprime i à la solution et met à jour s, gs et sIn
-        //attention, pour gs il ne faut pas rajouter tous les voisins de i dans g, mais seulement ceux dans gs
+        //attention, pour gs il ne faut pas rajouter d'artes vers tous les voisins de i dans g, mais seulement ceux dans gs
 
-       sommetAjouté.remove(i);
        grapheRestant.ajoutSommet(i);
+       HashSet<Integer> voisinsDuSommetSupprimeDansLeGrapheRestant = new HashSet<>();
+       for(Integer j : grapheInitial.getVoisins(i))
+           if(grapheRestant.getVertexSet().contains(j))
+               voisinsDuSommetSupprimeDansLeGrapheRestant.add(j);
+       grapheRestant.ajoutAretes(i,voisinsDuSommetSupprimeDansLeGrapheRestant);
+       sommetAjouté.remove(i);
        solution.remove(i);
 
     }
@@ -94,8 +98,20 @@ public class PartialSolVC {
         //     return true (aucun domaine ne peut devenir vide)
 
         //  -ne modifie pas this
-        throw new RuntimeException("methode non implementee");
-
+        D.remove(i);
+        if (val){
+            return nbChosenVertices()< k;
+        }
+        else{
+            Set<Integer> voisins = grapheRestant.getVoisins(i);
+            for(Integer j : voisins) {
+                if (D.containsKey(j)) {
+                    //pour supprimer le false du domaine de j (car on doit prendre j)
+                    D.get(j).remove(false);
+                }
+            }
+            return true;
+        }
   }
 
     public Graph getGrapheRestant(){
