@@ -5,36 +5,36 @@ import Utile.AlgosUtiles;
 import java.util.*;
 
 public class PartialSolVC {
-    private Graph g; //graphe initial (pas modifié)
+    private Graph grapheInitial; //graphe initial (pas modifié)
     int k;
-    private HashMap<Integer,Boolean> s;
+    private HashMap<Integer,Boolean> solution;
     //contient les décisions pour les sommets déjà traités
     //s.keySet() contient l'ensemble des sommets pour lesquels on a fait un choix,
     //et pour tout i dans s.ketSet(), s.get(i) vrai si la solution a pris sommet i, faux sinon
 
     //attributs ci-dessous redondants mais sont maintenus à jour pour accélerer les calculs
-    private HashSet<Integer> sIn; // = {i dans s.keySet()/ s.get(i) est vrai}
-    private Graph gs; //représente "le graphe restant", c'est à dire  g - s.getKey()
+    private HashSet<Integer> sommetAjouté; // = {i dans s.keySet()/ s.get(i) est vrai}
+    private Graph grapheRestant; //représente "le graphe restant", c'est à dire  g - s.getKey()
     //ainsi, les sommets de gs sont les variables pas encore affectées par s
 
-    public PartialSolVC(Graph g, int k){
+    public PartialSolVC(Graph grapheInitial, int k){
         //prérequis k > 0
         if(k==0)
             throw new RuntimeException("k==0 interdit");
         this.k=k;
-        this.g=g;
-        gs = new Graph(g);
-        s = new HashMap<Integer, Boolean>();
-        sIn = new HashSet<>();
+        this.grapheInitial = grapheInitial;
+        grapheRestant = new Graph(grapheInitial);
+        solution = new HashMap<Integer, Boolean>();
+        sommetAjouté = new HashSet<>();
     }
 
     public PartialSolVC(PartialSolVC sol){
-        this(sol.g,sol.k);
-        for(Map.Entry<Integer,Boolean> e : sol.s.entrySet())
-            s.put(e.getKey(),e.getValue());
-        for(Integer i : sol.sIn)
-            sIn.add(i);
-        gs = new Graph(sol.gs);
+        this(sol.grapheInitial,sol.k);
+        for(Map.Entry<Integer,Boolean> e : sol.solution.entrySet())
+            solution.put(e.getKey(),e.getValue());
+        for(Integer i : sol.sommetAjouté)
+            sommetAjouté.add(i);
+        grapheRestant = new Graph(sol.grapheRestant);
 
     }
 
@@ -43,20 +43,27 @@ public class PartialSolVC {
         throw new RuntimeException("methode non implementee");
     }
     public int nbChosenVertices(){
-        return sIn.size();
+        return sommetAjouté.size();
     }
 
     public void add(int i, boolean v){
         //prérequis : i sommet de g pas dans s.keySet()
         //action : ajoute i à la solution avec valeur b met à jour s, gs et sIn
-      throw new RuntimeException("methode non implementee");
+        solution.put(i,v);
+        if (v)
+            sommetAjouté.add(i);
+        grapheRestant.supprimeSommet(i);
     }
 
     public void remove(int i){
         //prérequis : i sommet de g  et s.containsKey(i)
         //action : supprime i à la solution et met à jour s, gs et sIn
         //attention, pour gs il ne faut pas rajouter tous les voisins de i dans g, mais seulement ceux dans gs
-        throw new RuntimeException("methode non implementee");
+
+       sommetAjouté.remove(i);
+       grapheRestant.ajoutSommet(i);
+       solution.remove(i);
+
     }
 
 
@@ -68,7 +75,7 @@ public class PartialSolVC {
         if(D.get(i).size()==1) //les domaines sont de taille 2, donc si 1 de taille 1 on est sûr de le choisir
                 return i;
 
-        return gs.getMaxDegVertex();
+        return grapheRestant.getMaxDegVertex();
     }
 
     public boolean propageContraintes(Map<Integer,ArrayList<Boolean>> D, int i, Boolean val) {
@@ -91,17 +98,17 @@ public class PartialSolVC {
 
   }
 
-    public Graph getGs(){
-        return gs;
+    public Graph getGrapheRestant(){
+        return grapheRestant;
     }
 
     public String toString(){
-        return s.toString();
+        return solution.toString();
     }
 
     /////////// pour les tests
     public boolean isValid(){
         //retourne vrai ssi sIn est bien un VC cover de g de taille <= k
-        return sIn.size()<=k && g.isVertexCover(sIn);
+        return sommetAjouté.size()<=k && grapheInitial.isVertexCover(sommetAjouté);
     }
 }
