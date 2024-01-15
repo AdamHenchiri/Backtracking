@@ -139,7 +139,7 @@ public class TestVC {
     }
 
 
-  /*  public static void testRandomG() {
+    public static void testRandomG() {
 
         Graph g = new Graph(9, true, 0.2);
         System.out.println("g = \n" + g);
@@ -147,7 +147,7 @@ public class TestVC {
         System.out.println("s2 \n" + s2);
 
     }
-*/
+
     public static void testHighestDegVsArbit() {
 
         int n = 80;
@@ -178,18 +178,18 @@ public class TestVC {
         public static void main(String[] args) {
 
         testPropagate_1();
-            testPropagate_2();
-            testPropagate_3();
+        testPropagate_2();
+        testPropagate_3();
         testPetitG_YES_V0();
         testPetitG2_YES_V0();
         testPetitG3_NO_V0();
         testPetitG4_NO_V0();
         testClique_YES_V0();
-        //testRandomG();
-          //  testHighestDegVsArbit();
-           /* testPetitG2_YES_V1();
-            testPetitG3_NO_V1();
-            testRandomG();*/
+        testRandomG();
+        testHighestDegVsArbit();
+        testPetitG2_YES_V1();
+        testPetitG3_NO_V1();
+        testRandomG();
 
     }
 }

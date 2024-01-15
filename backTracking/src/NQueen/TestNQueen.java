@@ -141,13 +141,12 @@ public class TestNQueen {
 
 
     public static void main(String[] args) {
-       /* testConstraintOK_0();
+        testConstraintOK_0();
         testComparaisonV0V1();
         testpropageContraintes_1();
         testV0();
         testV1();
         testV2();
-        testsLongs();
-*/
+       // testsLongs();
     }
 }

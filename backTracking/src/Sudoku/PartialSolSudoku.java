@@ -84,6 +84,14 @@ public class PartialSolSudoku {
         //pré : (i,j) indique un numéro de case dans grille
         return i*n+j;
     }
+    public static ArrayList<Integer> intToCoord(int n, int c){
+        //pré 0 <= c < n^2-1
+        //retourne (i,j) tq caseToInt(i,j)=c
+        ArrayList<Integer> res = new ArrayList<>();
+        res.add(c/n);
+        res.add(c%n);
+        return res;
+    }
 
     public static int intToLine(int n, int c){
         return c/n;
@@ -107,29 +115,20 @@ public class PartialSolSudoku {
     public void add(int numCase, int v){
         //prérequis 0 <= numCase < n*n , 1 <= v <= n, et case numCase vide
         //action : ajoute v dans case numCase de grille (et met à jour nVal)
-        throw new RuntimeException("methode non implémentée");
-
+        this.grille[intToLine(n,numCase)][intToCol(n,numCase)] = v;
+        nVal++;
     }
 
     public void remove(int numCase){
         //prérequis : 0 <= numCase < n*n, case numCase pleine
         //action : remet à 0 la case numCase de grille (et met  jour nVal)
-        throw new RuntimeException("methode non implémentée");
-
+        this.grille[intToLine(n,numCase)][intToCol(n,numCase)]  = 0;
+        nVal--;
     }
 
     public boolean isFullSolution(){
-
-        throw new RuntimeException("methode non implémentée");
-
+        return this.nVal == (n*n) ;
     }
-
-
-
-
-
-
-
 
     public static boolean reviseL(Map<Integer,ArrayList<Integer>> D, int n, int numCase, int val){
         //prerequis :
@@ -166,8 +165,17 @@ public class PartialSolSudoku {
         //si un domaine est devenu vide on peut s'arrêter et retourner false (et rien de garanti sur domaines)
         //sinon retourne true et enlève bien la valeur de tous les domaines
 
-        throw new RuntimeException("methode non implémentée");
-
+        ArrayList<Integer> coord = intToCoord(n, numcase);
+        int c = coord.get(1);
+        for(int v_c = 0;v_c <n ; v_c++){
+            int nc = coordToInt(n, v_c, c);
+            if(D.containsKey(nc)) {
+                D.get(nc).remove((Integer) val);
+                if (D.get(nc).isEmpty())
+                    return false;
+            }
+        }
+        return true;
     }
 
 
@@ -213,8 +221,15 @@ public class PartialSolSudoku {
         //  -sinon, sinon retourne faux (et aucune garantie à fournir sur D)
         //  -ne modifie pas this
 
-        throw new RuntimeException("methode non implémentée");
-
+        D.remove(numCase);
+        boolean test1 = reviseC(D,n,numCase,val);
+        boolean test2 = reviseL(D,n,numCase,val);
+        boolean test3 = reviseSS(D,n,numCase,val);
+        if (test1 && test2 && test3){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

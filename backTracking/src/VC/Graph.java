@@ -248,12 +248,13 @@ public class Graph {
         System.out.println(g);
         System.out.println(g.getMaxDegVertex()+"\n");
         g.supprimeSommet(g.getMaxDegVertex());
-        /*Graph g = new Graph(5);
-        System.out.println(g.);
-        g.ajoutSommet(7);
-        System.out.println(g);
-        g.ajoutArete(3,7);
-        System.out.println(g);*/
+
+        Graph g1 = new Graph(5);
+        System.out.println(g1);
+        g1.ajoutSommet(7);
+        System.out.println(g1);
+        g1.ajoutArete(3,7);
+        System.out.println(g1);
 
 
     }

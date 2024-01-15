@@ -44,34 +44,34 @@ public class TestSudoku {
 
     }
     public static void test4x4feasable1(){
-        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("src/Sudoku/sudoku4x4feasible.txt"));
+        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku4x4feasible.txt"));
         System.out.println(s2);
         printTest("test4x4feasable1", s2!=null);
     }
 
     public static void test9x9feasable1(){
-        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("src/Sudoku/sudoku9x9feasible.txt"));
+        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku9x9feasible.txt"));
         printTest("test9x9feasable1", s2!=null);
     }
 
 
     public static void test9x9unfeasable1(){
-        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("src/Sudoku/sudoku9x9unfeasible.txt"));
+        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku9x9unfeasible.txt"));
         printTest("test9x9unfeasable1", s2==null);
     }
 
 
     public static void test9x9counting(){
-        int n1 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("src/Sudoku/sudoku1.txt"));
-        int n2 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("src/Sudoku/sudoku2.txt"));
-        int n3 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("src/Sudoku/sudoku3.txt"));
+        int n1 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku1.txt"));
+        int n2 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku2.txt"));
+        int n3 = AlgosSudoku.mainBackTrackSudokuCount(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku3.txt"));
         printTest("test9x9counting", n1==0 && n2==1 && n3 == 9);
 
     }
 
     public static void test2525(){
         //permet de distinguer le MRV qui peut résoudre ce 25x25, alors que la version pas MRV n'y arrive pas en un temps raison nable
-        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("src/Sudoku/sudoku2525_1.txt"));
+        PartialSolSudoku s2 = AlgosSudoku.mainBackTrackSudoku(PartialSolSudoku.readFile("backTracking/src/Sudoku/sudoku2525_1.txt"));
         System.out.println(s2);
 
     }
@@ -80,12 +80,12 @@ public class TestSudoku {
 
 
     public static void main(String[] args) {
-        testReviseC();
-        testPropagate1();
-        test4x4feasable1();
-        test9x9feasable1();
-        test9x9unfeasable1();
-        test9x9counting();
+//        testReviseC();
+//        testPropagate1();
+//        test4x4feasable1();
+//        test9x9feasable1();
+//        test9x9unfeasable1();
+//        test9x9counting();
         test2525();
     }
 }

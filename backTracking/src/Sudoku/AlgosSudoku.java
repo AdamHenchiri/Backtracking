@@ -2,9 +2,7 @@ package Sudoku;
 
 import Utile.AlgosUtiles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AlgosSudoku {
 
@@ -26,7 +24,24 @@ public class AlgosSudoku {
         // ne modifie pas s
 
 
-        throw new RuntimeException("methode non implémentée");
+        if (s.isFullSolution()) {
+            return new PartialSolSudoku(s);
+        }
+        int numcase = AlgosUtiles.getUnaffectedVariableMRV(D);
+
+        for (Integer val : D.get(numcase)) {
+            Map<Integer, ArrayList<Integer>> Dmodif = AlgosUtiles.<Integer>deepCopyMap(D);
+            boolean ok = s.propagateConstraints(Dmodif, numcase, val);
+            if (ok) {
+                s.add(numcase, val);
+                PartialSolSudoku res = backTrackSudoku(s, Dmodif);
+                s.remove(numcase);
+                if (res != null) {
+                    return res;
+                }
+            }
+        }
+        return null;
 
     }
 
@@ -54,7 +69,19 @@ public class AlgosSudoku {
 
     }
 
-
+    public static Queue<Integer> createQueue(Map<Integer, ArrayList<Integer>> D){
+        //create a priority queue to sort the domain by size (MRV)
+        Queue<Integer> q = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return D.get(o1).size() - D.get(o2).size();
+            }
+        });
+        for (Map.Entry<Integer, ArrayList<Integer>> e : D.entrySet()) {
+            q.add(e.getKey());
+        }
+        return q;
+    }
 
     public static PartialSolSudoku mainBackTrackSudoku(int[][]g){
         //retourne une sol de s si existe, null sinon
@@ -62,7 +89,7 @@ public class AlgosSudoku {
         return backTrackSudoku(new PartialSolSudoku(g.length), createDomain(g));
     }
 
-    public static int backTrackSudokuCount(PartialSolSudoku s, Map<Integer,ArrayList<Integer>> D){
+    public static int backTrackSudokuCount(PartialSolSudoku s, Map<Integer,ArrayList<Integer>> D, Queue<Integer> q){
 
         //prérequis : (s,D) est FCC et non trivial
         //action : retourne le nombre de solutions s* qui étendent s et qui respectent D
@@ -70,13 +97,28 @@ public class AlgosSudoku {
         //
         // ne modifie pas s
 
-        throw new RuntimeException("methode non implémentée");
+        if (s.isFullSolution()) {
+            return 1;
+        }
+        int numcase = q.poll();
+        int res = 0;
+        for (Integer val : D.get(numcase)) {
+            Map<Integer, ArrayList<Integer>> Dmodif = AlgosUtiles.<Integer>deepCopyMap(D);
+            boolean ok = s.propagateConstraints(Dmodif, numcase, val);
+            if (ok) {
+                s.add(numcase, val);
+                res += backTrackSudokuCount(s, Dmodif, q);
+                s.remove(numcase);
+            }
+        }
+        return res;
 
     }
 
     public static int mainBackTrackSudokuCount(int [][]g) {
-
-        return backTrackSudokuCount(new PartialSolSudoku(g.length), createDomain(g));
+        Map<Integer, ArrayList<Integer>> D = createDomain(g);
+        Queue<Integer> q = createQueue(D);
+        return backTrackSudokuCount(new PartialSolSudoku(g.length), D, q);
     }
 
 }

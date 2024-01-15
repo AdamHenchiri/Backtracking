@@ -1,4 +1,6 @@
 package NQueen;
+import Utile.AlgosUtiles;
+
 import java.util.*;
 
 public class AlgosNQueen {
@@ -27,8 +29,20 @@ public class AlgosNQueen {
         // sinon retourne null et ne modifie pas s
 
         c0++;
-        throw new RuntimeException("methode non implémentée");
-
+        if (s.isFullSolution()){
+            return s.isValid()? s : null;
+        }
+        int i=s.getUnAffectedVar();
+        for (int c=0; c<s.getN(); c++){
+            PartialSolNQueen var_s = new PartialSolNQueen(s);
+            var_s.add(i,c);
+            PartialSolNQueen res = backTrackQueenV0(var_s);
+            if (res != null){
+                return res;
+            }
+            var_s.remove(i);
+        }
+        return null;
     }
 
 
@@ -36,8 +50,8 @@ public class AlgosNQueen {
     public static PartialSolNQueen mainBackTrackQueenVO(int n) {
         //n >= 1
         //retourne une solution des n-queens en utilisant backTrackQueenVO
-        throw new RuntimeException("methode non implémentée");
-
+        PartialSolNQueen s = new PartialSolNQueen(n);
+        return backTrackQueenV0(s);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +66,22 @@ public class AlgosNQueen {
         //ici, on sait en plus que s contient (0,c0), (1,c1), etc, car on a affecté dans l'ordre
 
         c1++;
-        throw new RuntimeException("methode non implémentée");
+        if (s.isFullSolution()){
+            return s;
+        }
+        int i=s.getUnAffectedVar();
+        for (int c=0; c<s.getN(); c++){
+            if (s.checkNewVal(i,c)) {
+                PartialSolNQueen s2 = new PartialSolNQueen(s);
+                s2.add(i, c);
+                PartialSolNQueen res = backTrackQueenV1(s2);
+                if (res != null) {
+                    return res;
+                }
+                s2.remove(i);
+            }
+        }
+        return null;
 
     }
 
@@ -60,8 +89,8 @@ public class AlgosNQueen {
     public static PartialSolNQueen mainBackTrackQueenV1(int n){
         //n >= 1
         //retourne une solution des n-queens en utilisant backTrackQueenV1
-        throw new RuntimeException("methode non implémentée");
-
+        PartialSolNQueen s = new PartialSolNQueen(n);
+        return backTrackQueenV1(s);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,8 +107,35 @@ public class AlgosNQueen {
         //pour calculer un nouveau domaine qui restera bien FCC
 
         c2++;
-        throw new RuntimeException("methode non implémentée");
-
+        if (s.isFullSolution()){
+            return s ;
+        }
+        int i=s.getUnAffectedVar();
+        ArrayList<Integer> D_i = D.get(i);
+        for (int c : D_i){
+            if (s.checkNewVal(i,c)) {
+                PartialSolNQueen s2 = new PartialSolNQueen(s);
+                s2.add(i, c);
+                Map<Integer,ArrayList<Integer>> D2 = new HashMap<>();
+                for (int j : D.keySet()){
+                    if (j>i){
+                        ArrayList<Integer> D_j = new ArrayList<>();
+                        for (int c2 : D.get(j)){
+                            if (s2.checkNewVal(j,c2)){
+                                D_j.add(c2);
+                            }
+                        }
+                        D2.put(j,D_j);
+                    }
+                }
+                PartialSolNQueen res = backTrackQueenV2(s2,D2);
+                if (res != null) {
+                    return res;
+                }
+                s2.remove(i);
+            }
+        }
+        return null;
     }
 
     private static Map<Integer,ArrayList<Integer>> prepareDomain(int n){
@@ -94,8 +150,13 @@ public class AlgosNQueen {
         }
         return D;
     }
+
     public static PartialSolNQueen mainBackTrackQueenV2(int n) {
-        throw new RuntimeException("methode non implémentée");
+        //n >= 1
+        //retourne une solution des n-queens en utilisant backTrackQueenV2
+        PartialSolNQueen s = new PartialSolNQueen(n);
+        Map<Integer,ArrayList<Integer>> D = prepareDomain(n);
+        return backTrackQueenV2(s,D);
 
     }
 
@@ -112,14 +173,44 @@ public class AlgosNQueen {
         //stratégie : fait du FC + MRV pour choisir la prochaine variable
 
         c3++;
-        throw new RuntimeException("methode non implémentée");
-
+        if (s.isFullSolution()){
+            return s ;
+        }
+        int i=AlgosUtiles.getUnaffectedVariableMRV(D);
+        ArrayList<Integer> D_i = D.get(i);
+        for (int c : D_i){
+            if (s.checkNewVal(i,c)) {
+                PartialSolNQueen s2 = new PartialSolNQueen(s);
+                s2.add(i, c);
+                Map<Integer,ArrayList<Integer>> D2 = new HashMap<>();
+                for (int j : D.keySet()){
+                    if (j>i){
+                        ArrayList<Integer> D_j = new ArrayList<>();
+                        for (int c2 : D.get(j)){
+                            if (s2.checkNewVal(j,c2)){
+                                D_j.add(c2);
+                            }
+                        }
+                        D2.put(j,D_j);
+                    }
+                }
+                PartialSolNQueen res = backTrackQueenV2(s2,D2);
+                if (res != null) {
+                    return res;
+                }
+                s2.remove(i);
+            }
+        }
+        return null;
     }
 
 
     public static PartialSolNQueen mainBackTrackQueenV3(int n) {
-        throw new RuntimeException("methode non implémentée");
-
+        //n >= 1
+        //retourne une solution des n-queens en utilisant backTrackQueenV3
+        PartialSolNQueen s = new PartialSolNQueen(n);
+        Map<Integer,ArrayList<Integer>> D = prepareDomain(n);
+        return backTrackQueenV3(s,D);
     }
 
     public static void main(String[] args) {

@@ -53,8 +53,11 @@ public class PartialSolNQueen {
     public int getUnAffectedVar(){
         //prerequis !s.isFullSolution()
         //action : retourne un indice de variable non affectée (ici une ligne sans reine)
-        throw new RuntimeException("methode non implémentée");
-
+        for(int i=0;i<n;i++){
+            if(!this.m.containsKey(i))
+                return i;
+        }
+        return -1;
     }
 
 
@@ -62,13 +65,20 @@ public class PartialSolNQueen {
     public static boolean constraintOk(int l1, int c1, int l2, int c2){
         //prérequis li et ci >= 0
         //retourne vrai ssi reine en (l_1,c_1) ne peut pas prendre celle en (l_2,c_2) (et qu'elles ne sont pas sur la même case)
-        throw new RuntimeException("methode non implémentée");
-
+        if ((l1==l2 || c1==c2) || (Math.abs(l1-l2)==Math.abs(c1-c2)))
+            return false;
+        return true;
     }
+
     public boolean checkNewVal(int l0, int c0){
         //retourne vrai ssi une nouvelle reine placée en position "(l0,c0)" ne pourrait manger aucune reine déjà dans this
-        throw new RuntimeException("methode non implémentée");
-
+        boolean ok = true;
+        for(Map.Entry<Integer,Integer> s : this.m.entrySet()){
+            ok = (this.constraintOk(s.getKey(),s.getValue(),l0,c0)) && ok;
+            if(!ok)
+                return ok;
+        }
+        return ok;
     }
 
     public boolean isValid(){
@@ -92,9 +102,20 @@ public class PartialSolNQueen {
         //  -fait du fwd checking pour enlever de D les valeurs devenant illégales si l'on ajoutait (l0,c0) à this
         //  -si aucun domaine ne devient vide, retourne true
         //  -sinon, sinon retourne faux (et aucune garantie à fournir sur D)
-        //  -ne modifie pas this
-        throw new RuntimeException("methode non implémentée");
-
+        D.remove(l0);
+        for(Map.Entry<Integer,ArrayList<Integer>> e : D.entrySet()){
+            ArrayList<Integer> toRemove = new ArrayList<>();
+            for(Integer c : e.getValue()){
+                if(!constraintOk(e.getKey(),c,l0,c0))
+                    toRemove.add(c);
+            }
+            for(Integer c : toRemove){
+                e.getValue().remove(c);
+            }
+            if(e.getValue().isEmpty())
+                return false;
+        }
+        return true;
     }
 
 }

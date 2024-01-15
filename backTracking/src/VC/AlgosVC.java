@@ -21,12 +21,13 @@ public class AlgosVC {
         for (Boolean v : D.get(i)) {
             Map<Integer, ArrayList<Boolean>> Dmodif = AlgosUtiles.<Boolean>deepCopyMap(D);//new HashMap<>(D);
             boolean ok = s.propageContraintes(Dmodif, i, v);
-            if (!ok)
+            if (ok) {
                 s.add(i, v);
                 PartialSolVC res = backTrackVCV0(s, Dmodif);
                 s.remove(i);
                 if (res != null)
                     return res;
+            }
         }
         return null;
     }
@@ -38,8 +39,21 @@ public class AlgosVC {
 
     public static PartialSolVC backTrackVCV1(PartialSolVC s, Map<Integer,ArrayList<Boolean>> D){
         //utilise MRV puis highestdegree
-        throw new RuntimeException("methode non implementee");
-    }
+        if (s.isFullSolution())
+            return new PartialSolVC(s);
+        int i = s.getUnaffectedVariableMRVHighestDeg(D);
+        for (Boolean v : D.get(i)) {
+            Map<Integer, ArrayList<Boolean>> Dmodif = AlgosUtiles.<Boolean>deepCopyMap(D);//new HashMap<>(D);
+            boolean ok = s.propageContraintes(Dmodif, i, v);
+            if (ok) {
+                s.add(i, v);
+                PartialSolVC res = backTrackVCV0(s, Dmodif);
+                s.remove(i);
+                if (res != null)
+                    return res;
+            }
+        }
+        return null;    }
 
     public static Map<Integer,ArrayList<Boolean>> createDomain(int n){
         Map<Integer,ArrayList<Boolean>> D = new HashMap<>();

@@ -1,8 +1,6 @@
 package Utile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AlgosUtiles {
 
@@ -18,7 +16,14 @@ public class AlgosUtiles {
     public static <T> int getUnaffectedVariableMRV(Map<Integer,ArrayList<T>> D) {
         //prérequis : !D.isEmpty()
         //retourne une variable de taille de domaine minimal
-        throw new RuntimeException("methode non implémentée");
-
+        int min = Integer.MAX_VALUE;
+        int res = -1;
+        for (Map.Entry<Integer, ArrayList<T>> e : D.entrySet()) {
+            if (e.getValue().size() < min) {
+                min = e.getValue().size();
+                res = e.getKey();
+            }
+        }
+        return res;
     }
 }
